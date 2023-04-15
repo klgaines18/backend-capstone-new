@@ -4,7 +4,8 @@ const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
 async function list(req, res) {
   const isShowing = req.query.is_showing;
   if (isShowing === 'true') {
-    res.send("is showing is true")
+    const data = await moviesService.listShowing()
+    res.json({ data });
   } else {
     const data = await moviesService.listAll()
     res.json({ data });
