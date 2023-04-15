@@ -11,6 +11,6 @@ router
 router
   .route("/")
   .get(controller.list)
-  .all(methodNotAllowed)
+  .all(methodNotAllowed);
 
-  module.exports = router;
+module.exports = router;

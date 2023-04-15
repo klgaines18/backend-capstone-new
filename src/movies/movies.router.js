@@ -3,9 +3,11 @@ const controller = require("./movies.controller");
 const methodNotAllowed = require("../errors/methodNotAllowed");
 
 const reviewsRouter = require("../reviews/reviews.router");
+const theatersRouter = require("../theaters/theaters.router");
 
 // need to add validation
 router.use("/:movieId/reviews", reviewsRouter);
+router.use("/:movieId/theaters", theatersRouter);
 
 router
   .route("/:movieId")
