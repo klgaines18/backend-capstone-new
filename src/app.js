@@ -6,12 +6,14 @@ const cors = require("cors");
 const errorHandler = require("./errors/errorHandler");
 const notFound = require("./errors/notFound");
 
+const reviewsRouter = require("./reviews/reviews.router")
 const moviesRouter = require("./movies/movies.router");
 
 app.use(cors());
 app.use(express.json());
 
 //Routes
+app.use("/reviews", reviewsRouter)
 app.use("/movies", moviesRouter)
 
 // Error handlers
