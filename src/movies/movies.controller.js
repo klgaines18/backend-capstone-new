@@ -1,9 +1,13 @@
-function list(req, res) {
+const moviesService = require("./movies.service");
+const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
+
+async function list(req, res) {
   const isShowing = req.query.is_showing;
   if (isShowing === 'true') {
     res.send("is showing is true")
   } else {
-    res.send("is showing is not true")
+    const data = await moviesService.listAll()
+    res.json({ data });
   }
 }
 
@@ -13,6 +17,6 @@ function read(req, res, next) {
 }
 
 module.exports = {
-  list,
+  list: asyncErrorBoundary(list),
   read
 }
