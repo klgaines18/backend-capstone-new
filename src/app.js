@@ -1,13 +1,18 @@
 if (process.env.USER) require("dotenv").config();
 const express = require("express");
+
+const errorHandler = require("./errors/errorHandler");
+const notFound = require("./errors/notFound");
+
+
 const app = express();
 
-const onlyMovies = (req, res) => {
-  const isShowing = req.query.is_showing
-  const content = isShowing ? 'Is Showing is present' : "Is Showing not present"
-  res.send(content)
-}
+app.use(express.json());
 
-app.get('/movies', onlyMovies)
+//Routes
+
+// Error handlers
+app.use(notFound);
+app.use(errorHandler);
 
 module.exports = app;
