@@ -6,8 +6,8 @@ const reviewsRouter = require("../reviews/reviews.router");
 const theatersRouter = require("../theaters/theaters.router");
 
 // need to add validation
-router.use("/:movieId/reviews", reviewsRouter);
-router.use("/:movieId/theaters", theatersRouter);
+router.use("/:movieId/reviews", controller.movieExists, reviewsRouter);
+router.use("/:movieId/theaters", controller.movieExists, theatersRouter);
 
 router
   .route("/:movieId")
