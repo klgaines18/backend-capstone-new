@@ -1,6 +1,14 @@
-function list(req, res) {
+const reviewsService = require("./reviews.service");
+const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
+
+async function list(req, res, next) {
   const { movieId } = req.params;
-  res.send(`getting reviews for movieId: ${movieId}`)
+  if(movieId) {
+    const data = await reviewsService.list(movieId)
+    res.json({ data });
+  } else {
+    next({ status: 404, message: `No Movie ID provided.` });
+  }
 }
 
 function destroy(req, res) {
@@ -13,7 +21,7 @@ function update(req, res) {
 }
 
 module.exports = {
-  list,
+  list: asyncErrorBoundary(list),
   delete: [destroy],
   update
 }

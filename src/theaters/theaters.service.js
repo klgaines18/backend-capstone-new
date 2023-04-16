@@ -1,5 +1,4 @@
 const knex = require("../db/connection");
-const mapProperties = require("../utils/map-properties");
 const reduceProperties = require("../utils/reduce-properties");
 
 function listGivenMovie(movie_id) {
