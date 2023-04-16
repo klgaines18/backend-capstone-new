@@ -11,17 +11,52 @@ async function list(req, res, next) {
   }
 }
 
-function destroy(req, res) {
+function read(req, res) {
+  const { review: data } = res.locals;
+  res.json({ data });
+}
+
+
+async function destroy(req, res) {
+  const { review } = res.locals;
+  await reviewsService.delete(review.review_id);
   res.sendStatus(204);
 }
 
-function update(req, res) {
-  const { reviewId } = req.params;
-  res.send(`updating review ${reviewId}`)
+async function update(req, res, next) {
+  const updatedReview = {
+    ...req.body.data,
+    review_id: res.locals.review.review_id,
+  };
+  const data = await reviewsService.update(updatedReview);
+  return next();
+}
+
+// VALIDATION //
+
+const VALID_PROPERTIES = [
+  "content",
+  "score",
+];
+
+
+async function reviewExists(req, res, next) {
+  const review = await reviewsService.read(req.params.reviewId);
+  if (review) {
+    res.locals.review = review;
+    return next();
+  }
+  next({ status: 404, message: `Review cannot be found.` });
 }
 
 module.exports = {
   list: asyncErrorBoundary(list),
-  delete: [destroy],
-  update
+  delete: [asyncErrorBoundary(reviewExists), asyncErrorBoundary(destroy)],
+  update: [
+    asyncErrorBoundary(reviewExists),
+    asyncErrorBoundary(update),
+    asyncErrorBoundary(reviewExists),
+    asyncErrorBoundary(read)
+  ],
+  read: [asyncErrorBoundary(reviewExists), asyncErrorBoundary(read)]
 }
