@@ -31,10 +31,6 @@ async function update(req, res, next) {
   return next();
 }
 
-// VALIDATION //
-
-const VALID_PROPERTIES = ["content", "score"];
-
 async function reviewExists(req, res, next) {
   const review = await reviewsService.read(req.params.reviewId);
   if (review) {

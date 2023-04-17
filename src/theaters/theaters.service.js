@@ -1,14 +1,6 @@
 const knex = require("../db/connection");
 const reduceProperties = require("../utils/reduce-properties");
 
-function listGivenMovie(movie_id) {
-  return knex("theaters as t")
-    .join("movies_theaters as mt", "t.theater_id", "mt.theater_id")
-    .distinct("t.*")
-    .where({ "mt.movie_id": movie_id })
-    .andWhere({ "mt.is_showing": true });
-}
-
 const reduceMovies = reduceProperties("theater_id", {
   movie_id: ["movies", null, "movie_id"],
   title: ["movies", null, "title"],
@@ -28,6 +20,14 @@ function listAll() {
     .select("t.*", "m.*", "mt.is_showing", "mt.theater_id")
     .where({ "mt.is_showing": true })
     .then(reduceMovies);
+}
+
+function listGivenMovie(movie_id) {
+  return knex("theaters as t")
+    .join("movies_theaters as mt", "t.theater_id", "mt.theater_id")
+    .distinct("t.*")
+    .where({ "mt.movie_id": movie_id })
+    .andWhere({ "mt.is_showing": true });
 }
 
 module.exports = {
