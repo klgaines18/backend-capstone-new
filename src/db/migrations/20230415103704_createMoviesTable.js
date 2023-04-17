@@ -2,7 +2,7 @@
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> }
  */
-exports.up = function(knex) {
+exports.up = function (knex) {
   return knex.schema.createTable("movies", (table) => {
     table.increments("movie_id").primary();
     table.string("title");
@@ -10,13 +10,13 @@ exports.up = function(knex) {
     table.string("rating");
     table.text("image_url");
     table.timestamps(true, true);
-  })
+  });
 };
 
 /**
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> }
  */
-exports.down = function(knex) {
+exports.down = function (knex) {
   return knex.schema.dropTable("movies");
 };

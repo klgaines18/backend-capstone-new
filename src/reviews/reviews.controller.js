@@ -3,8 +3,8 @@ const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
 
 async function list(req, res, next) {
   const { movieId } = req.params;
-  if(movieId) {
-    const data = await reviewsService.list(movieId)
+  if (movieId) {
+    const data = await reviewsService.list(movieId);
     res.json({ data });
   } else {
     next({ status: 404, message: `No Movie ID provided.` });
@@ -15,7 +15,6 @@ function read(req, res) {
   const { review: data } = res.locals;
   res.json({ data });
 }
-
 
 async function destroy(req, res) {
   const { review } = res.locals;
@@ -34,11 +33,7 @@ async function update(req, res, next) {
 
 // VALIDATION //
 
-const VALID_PROPERTIES = [
-  "content",
-  "score",
-];
-
+const VALID_PROPERTIES = ["content", "score"];
 
 async function reviewExists(req, res, next) {
   const review = await reviewsService.read(req.params.reviewId);
@@ -56,7 +51,7 @@ module.exports = {
     asyncErrorBoundary(reviewExists),
     asyncErrorBoundary(update),
     asyncErrorBoundary(reviewExists),
-    asyncErrorBoundary(read)
+    asyncErrorBoundary(read),
   ],
-  read: [asyncErrorBoundary(reviewExists), asyncErrorBoundary(read)]
-}
+  read: [asyncErrorBoundary(reviewExists), asyncErrorBoundary(read)],
+};

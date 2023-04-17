@@ -6,7 +6,7 @@ function listGivenMovie(movie_id) {
     .join("movies_theaters as mt", "t.theater_id", "mt.theater_id")
     .distinct("t.*")
     .where({ "mt.movie_id": movie_id })
-    .andWhere({ "mt.is_showing": true })
+    .andWhere({ "mt.is_showing": true });
 }
 
 const reduceMovies = reduceProperties("theater_id", {
@@ -19,19 +19,18 @@ const reduceMovies = reduceProperties("theater_id", {
   created_at: ["movies", null, "created_at"],
   updated_at: ["movies", null, "updated_at"],
   is_showing: ["movies", null, "is_showing"],
-  // theater_id: ["movies", null, "mt.theater_id"]
 });
 
 function listAll() {
   return knex("theaters as t")
-  .join("movies_theaters as mt", "t.theater_id", "mt.theater_id")
-  .join("movies as m", "mt.movie_id", "m.movie_id")
-  .select("t.*", "m.*", "mt.is_showing", "mt.theater_id")
-  .where({ "mt.is_showing": true })
-  .then(reduceMovies)
+    .join("movies_theaters as mt", "t.theater_id", "mt.theater_id")
+    .join("movies as m", "mt.movie_id", "m.movie_id")
+    .select("t.*", "m.*", "mt.is_showing", "mt.theater_id")
+    .where({ "mt.is_showing": true })
+    .then(reduceMovies);
 }
 
 module.exports = {
   listGivenMovie,
-  listAll
-}
+  listAll,
+};
